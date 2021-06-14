@@ -38,7 +38,6 @@ class BulkUploadController extends Controller
                     $header = $data[0];
                     unset($data[0]);
                 }
-
                 $batch->add(new BulkUpload($data, $header,$table_name));
             }
             return $batch;

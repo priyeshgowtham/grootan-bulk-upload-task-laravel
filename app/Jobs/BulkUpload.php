@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class BulkUpload implements ShouldQueue
 {
@@ -39,8 +40,10 @@ class BulkUpload implements ShouldQueue
      */
     public function handle()
     {   
-        foreach ($this->data as $sale) {
-            $bulkData = array_combine($this->header, $sale);
+        foreach ($this->data as $data) {
+            $bulkData = array_combine($this->header, $data);
+            if(isset($bulkData['password']))
+                $bulkData['password'] = Hash::make($bulkData['password']);
             DB::table($this->table)->insert($bulkData);
         }
     }
